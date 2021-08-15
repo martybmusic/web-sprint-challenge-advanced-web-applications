@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from 'axios';
 import { useHistory } from 'react-router';
 
+import axiosWithAuth from "../helpers/axiosWithAuth";
+
 const initialValues = { username: 'Lambda', password: 'School' };
 
 const Login = () => {
@@ -19,7 +21,8 @@ const Login = () => {
   const handleSubmit = (evt) => {
     evt.preventDefault();
     console.log(formValues);
-    axios.post('/api/login', formValues)
+    axiosWithAuth()
+      .post('/api/login', formValues)
       .then((res) => {
         console.log('Login Post Success', res);
         localStorage.setItem('token', res.data.payload)
