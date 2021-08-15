@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from 'axios';
 import { useHistory } from 'react-router';
 
 import axiosWithAuth from "../helpers/axiosWithAuth";
@@ -8,7 +7,7 @@ const initialValues = { username: 'Lambda', password: 'School' };
 
 const Login = () => {
   const [formValues, setFormValues] = useState(initialValues);
-  const {push} = useHistory;
+  const {push} = useHistory();
   // make a post request to retrieve a token from the api
   // when you have handled the token, navigate to the BubblePage route
   const handleChanges = (evt) => {
