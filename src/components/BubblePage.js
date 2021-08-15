@@ -15,10 +15,13 @@ const BubblePage = () => {
 
   const saveEdit = (editColor) => {
     axiosWithAuth()
-      .put()
+      .put(`/api/colors/${editColor.id}`, editColor)
       .then((res) => {
-        console.log("Colors", colors);
-        setColors([ ...colors, res.data ])
+        console.log(res);
+        let index = colors.findIndex((color) => color.id === editColor.id);
+        colors[index] = editColor
+        setColors([...colors])
+        console.log('Colors check', colors);
       })
       .catch(err => {
         console.log(err);
@@ -29,6 +32,7 @@ const BubblePage = () => {
     axiosWithAuth()
       .delete(`/api/colors/${colorToDelete.id}`)
       .then((res) => {
+        console.log(res);
         setColors(colors.filter(color => color.id !==colorToDelete.id))
       })
       .catch(err => {
@@ -37,8 +41,7 @@ const BubblePage = () => {
   };
 
   useEffect(() => {
-    fetchColorService()
-    .then((res) => {
+    fetchColorService().then((res) => {
         setColors(res)
       })
   }, []);
