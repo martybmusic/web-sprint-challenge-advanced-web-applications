@@ -5,7 +5,7 @@ const fetchColorService = () => {
         .get('/api/colors')
         .then((res) => {
             console.log('Fetch Color', res);
-            return(res.data)
+            return(res.data);
         })
         .catch((err) => {
             console.log(err);
