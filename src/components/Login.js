@@ -1,10 +1,42 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useHistory } from 'react-router';
+
+import axiosWithAuth from "../helpers/axiosWithAuth";
+
+const initialValues = { username: '', password: '' };
 
 const Login = () => {
+  const [formValues, setFormValues] = useState(initialValues);
+  const {push} = useHistory();
+  const [error, setError] = useState();
   // make a post request to retrieve a token from the api
   // when you have handled the token, navigate to the BubblePage route
+  const handleChanges = (evt) => {
+    setFormValues({
+      ...formValues,
+      [evt.target.name]: evt.target.value
+    })
+  };
 
-  const error = "";
+  const handleSubmit = (evt) => {
+    evt.preventDefault();
+    if (formValues.username !== 'Lambda' || formValues.password !== 'School') {
+      setError('Username or Password not recognized')
+    }
+    console.log(formValues);
+    axiosWithAuth()
+      .post('/api/login', formValues)
+      .then((res) => {
+        console.log('Login Post Success', res);
+        localStorage.setItem('token', res.data.payload)
+        push('/bubblepage')
+      })
+      .catch(err => {
+        console.log(err);
+      })
+  }
+
+  // const error = "";
   //replace with error state
 
   return (
@@ -13,6 +45,25 @@ const Login = () => {
       <div data-testid="loginForm" className="login-form">
         <h2>Build login form here</h2>
       </div>
+      <form onSubmit={handleSubmit}>
+        <label htmlFor='username'>username</label>
+        <input 
+          id='username'
+          name='username'
+          data-testid='username'
+          value={formValues.username}
+          onChange={handleChanges}
+        />
+        <label htmlFor='password'>password</label>
+        <input 
+          id='password'
+          name='password'
+          data-testid='password'
+          value={formValues.password}
+          onChange={handleChanges}
+        />
+        <button>Log In</button>
+      </form>
 
       <p id="error" className="error">{error}</p>
     </div>
