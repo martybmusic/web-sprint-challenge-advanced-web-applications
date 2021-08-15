@@ -8,6 +8,7 @@ const initialValues = { username: 'Lambda', password: 'School' };
 const Login = () => {
   const [formValues, setFormValues] = useState(initialValues);
   const {push} = useHistory();
+  const [error, setError] = useState();
   // make a post request to retrieve a token from the api
   // when you have handled the token, navigate to the BubblePage route
   const handleChanges = (evt) => {
@@ -19,6 +20,9 @@ const Login = () => {
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
+    if (formValues.username !== 'Lambda' || formValues.password !== 'School') {
+      setError('Username or Password not recognized')
+    }
     console.log(formValues);
     axiosWithAuth()
       .post('/api/login', formValues)
@@ -32,7 +36,7 @@ const Login = () => {
       })
   }
 
-  const error = "";
+  // const error = "";
   //replace with error state
 
   return (
